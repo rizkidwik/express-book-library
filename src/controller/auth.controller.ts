@@ -5,6 +5,7 @@ interface RegisterRequest {
     email: string;
     password: string;
     name?: string;
+    roles?: string;
 }
 
 interface LoginRequest {
@@ -18,7 +19,7 @@ class AuthController {
         res: Response<ApiResponse>
     ): Promise<any> {
         try {
-            const { email, password, name }  = req.body;
+            const { email, password, name, roles }  = req.body;
 
             if (!email || !password) {
                 return res.status(400).json({
@@ -27,7 +28,7 @@ class AuthController {
                 });
             }
 
-            const result = await AuthService.register({email, password, name});
+            const result = await AuthService.register({email, password, name, roles});
 
             return res.status(201).json({
                 success: true,
