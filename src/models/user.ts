@@ -29,7 +29,7 @@ export class UserModel {
 
     static async create(userData: CreateUserDTO): Promise<number> {
         const hashedPassword = await bcrypt.hash(userData.password, 10);
-        const roles = userData.roles ?? 'user'
+        const roles = userData.roles ?? 'member'
         const [result] = await pool.execute<ResultSetHeader>(
             'INSERT INTO users (email, password, name, roles) VALUES (?,?,?,?)',
             [userData.email, hashedPassword, userData.name, roles]
