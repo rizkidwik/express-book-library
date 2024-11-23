@@ -1,28 +1,30 @@
 import { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
+import { verifyToken } from '../utils/jwt.util';
 
-const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
-  const token = req.header('Authorization')?.replace('Bearer ', '');
 
-  if (!token) {
-    return res.status(401).json({ error: 'No token, authorization denied' });
-  }
+export const authMiddleware = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+        const token = req.headers.authorization?.split(' ')[1];
 
-  try {
-    const decoded = jwt.verify(
-      token, 
-      process.env.JWT_SECRET || 'your_jwt_secret'
-    ) as { id: number; email: string };
+        if(!token){
+            return res.status(401).json({
+                success: false,
+                message: 'No token provided'
+            });
+        }
 
-    req.user = {
-      id: decoded.id,
-      email: decoded.email
-    };
+        const decoded = verifyToken(token) as { id: number; email: string};
 
-    next();
-  } catch (error) {
-    res.status(401).json({ error: 'Token is not valid' });
-  }
-};
-
-export default authMiddleware;
+        req.user = decoded;
+        next();
+    } catch (error) {
+        return res.status(401).json({
+            success: false,
+            message: 'Invalid token'
+        })
+    }
+}

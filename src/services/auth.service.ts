@@ -1,39 +1,35 @@
-import UserModel from "../models/user";
+import { UserModel, CreateUserDTO } from "../models/user";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-interface LoginCredentials {
-  email: string;
-  password: string;
-}
+import { generateToken } from "../utils/jwt.util";
 
-interface AuthResult {
-  userId: number;
-  token: string;
-}
+export class AuthService {
+    static async register(userData: CreateUserDTO){
+        const existingUser = await UserModel.findByEmail(userData.email);
 
-class AuthService {
-  static async register(
-    userData: LoginCredentials & { name?: string }
-  ): Promise<AuthResult> {
-    const existingUser = await UserModel.findByEmail(userData.email);
-    if (existingUser) {
-      throw new Error("User already exists");
+        if(existingUser){
+            throw new Error('User already exists');
+        }
+
+        const userId = await UserModel.create(userData);
+        const token = generateToken({id: userId, email: userData.email})
+
+        return { userId, token };
     }
 
-    const userId = await UserModel.create(userData);
+    static async login(email:string, password: string){
+        const user = await UserModel.findByEmail(email);
 
-    const token = this.generateToken(userId, userData.email);
+        if(!user){
+            throw new Error('Invalid credentials');
+        }
 
-    return { userId, token };
-  }
+        const isValidPassword = await bcrypt.compare(password, user.password);
 
-  private static generateToken(userId: number, email: string): string {
-    return jwt.sign(
-      { id: userId, email },
-      process.env.JWT_SECRET || "jwt_secret",
-      { expiresIn: "8h" }
-    );
-  }
+        if(!isValidPassword){
+            throw new Error('Invalid credentials');
+        }
+
+        const token = generateToken({id: user.id, email: user.email});
+        return { userId: user.id, token};
+    }
 }
-
-export default AuthService;
