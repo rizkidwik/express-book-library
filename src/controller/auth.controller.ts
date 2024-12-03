@@ -82,7 +82,7 @@ class AuthController {
         res: Response<ApiResponse>
     ): Promise<any> {
         try {
-console.log(req.user)
+
         return res.status(200).json({
             success: true,
             message: 'Data fetched Successfully',

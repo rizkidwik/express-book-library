@@ -1,5 +1,5 @@
 import { ResultSetHeader, RowDataPacket } from "mysql2";
-import pool from "../config/database";
+import {pool} from "../config/database";
 
 export interface Book extends RowDataPacket {
     id: number;

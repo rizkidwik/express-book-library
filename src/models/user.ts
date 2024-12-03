@@ -1,5 +1,5 @@
 import { RowDataPacket, ResultSetHeader } from 'mysql2/promise';
-import pool from '../config/database';
+import {pool} from '../config/database';
 import bcrypt from 'bcryptjs';
 
 export interface User extends RowDataPacket {
