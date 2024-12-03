@@ -1,6 +1,6 @@
 import { UserModel, CreateUserDTO } from "../models/user";
 import bcrypt from "bcryptjs";
-import { generateToken } from "../utils/jwt.util";
+import { generateToken, verifyToken } from "../utils/jwt.util";
 
 export class AuthService {
     static async register(userData: CreateUserDTO){
@@ -30,6 +30,6 @@ export class AuthService {
         }
 
         const token = generateToken({id: user.id, email: user.email});
-        return { userId: user.id, token};
+        return { user: user, token};
     }
 }

@@ -2,18 +2,24 @@ import express from "express";
 import dotenv from "dotenv";
 import authRoutes from "./routes/auth.routes";
 import categoryRoutes from "./routes/category.routes";
+import bookRoutes from "./routes/book.routes";
 import { authMiddleware } from "./middleware/auth.middleware";
 import { roleMiddleware } from "./middleware/roles.middleware";
-
+import cors from 'cors'
+import path from "path";
 dotenv.config();
 
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors())
 
-app.use("/api/auth", authRoutes);
+app.use("/auth", authRoutes);
 app.use("/categories", roleMiddleware, categoryRoutes);
+app.use("/books", roleMiddleware, bookRoutes);
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 
 app.use(
   (

@@ -13,6 +13,10 @@ interface LoginRequest {
     password: string;
 }
 
+interface AuthRequest {
+    id: number;
+    token: string;
+}
 class AuthController {
     public async register(
         req: Request<{}, ApiResponse, RegisterRequest>,
@@ -68,6 +72,26 @@ class AuthController {
             return res.status(401).json({
                 success: false,
                 message: error instanceof Error ? error.message : 'Login failed'
+            });
+        
+        }
+    }
+
+    public async me(
+        req: Request<{}, ApiResponse,{}>,
+        res: Response<ApiResponse>
+    ): Promise<any> {
+        try {
+console.log(req.user)
+        return res.status(200).json({
+            success: true,
+            message: 'Data fetched Successfully',
+            data: req.user
+        });
+        } catch (error) {
+            return res.status(401).json({
+                success: false,
+                message: error instanceof Error ? error.message : 'Data fetch failed'
             });
         
         }
