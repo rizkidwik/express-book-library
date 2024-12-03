@@ -41,7 +41,9 @@ class CategoryController {
                 });
             }
 
-            const result = await CategoryService.create({name});
+            const operation = await CategoryService.create({name});
+
+            const result = await CategoryService.getById(operation.resultId)
 
             return res.status(201).json({
                 success: true,

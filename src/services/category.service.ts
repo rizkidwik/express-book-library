@@ -10,7 +10,7 @@ export class CategoryService {
     static async getAll(){
         const data = await CategoryModel.getAll();
 
-        return { data }
+        return data
     }
 
     static async update(id: number, name: string){
@@ -31,5 +31,13 @@ export class CategoryService {
         const result = await CategoryModel.delete(id)
 
         return { result }
+    }
+
+    static async getById(id: number){
+        const category = await CategoryModel.findById(id)
+        if(!category){
+            throw new Error('Category not found');
+        }
+        return category
     }
 }
