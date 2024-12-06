@@ -3,7 +3,7 @@ import multer from "multer"
 const fileUploadMiddleware = (fieldName: string, dir: string = 'user_image') => {
     return multer({
         storage: multer.diskStorage({
-            destination: 'src/uploads/' + dir,
+            destination: 'uploads/' + dir,
             filename: (req, file, cb) => {
                 cb(null, `${Date.now()}-${file.originalname}`)
             }

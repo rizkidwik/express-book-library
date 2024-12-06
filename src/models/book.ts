@@ -43,7 +43,6 @@ export class BookModel {
         } else {
             thickness = 'tebal'
         }
-        
         const [result] = await pool.execute<ResultSetHeader>(
             'INSERT INTO books (title,description,image_url,release_year,price,total_page,thickness,category_id) VALUES (?,?,?,?,?,?,?,?)',
             [data.title, data.description, data.image_url, data.release_year,data.price, data.total_page, thickness, data.category_id]

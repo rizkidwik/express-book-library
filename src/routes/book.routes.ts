@@ -5,7 +5,7 @@ import fileUploadMiddleware from '../middleware/file-upload.middleware';
 const router = express.Router();
 
 router.get('/', BookController.index);
-router.post('/', fileUploadMiddleware('image','books'), BookController.create);
+router.post('/', fileUploadMiddleware('image_url','books'), BookController.create);
 router.patch('/:id', BookController.update);
 router.delete('/:id', BookController.delete);
 
