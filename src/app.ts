@@ -18,9 +18,9 @@ app.use(cors())
 
 app.use("/auth", authRoutes);
 app.use("/categories", roleMiddleware, categoryRoutes);
-app.use("/books", bookRoutes);
+app.use("/books", authMiddleware, bookRoutes);
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
-app.use("/borrows", roleMiddleware, borrowRoutes)
+app.use("/borrows", authMiddleware, borrowRoutes)
 
 app.use(
   (
