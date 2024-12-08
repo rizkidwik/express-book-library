@@ -33,4 +33,12 @@ export class BookService {
 
         return { result }
     }
+
+    static async findById(id: number){
+        const book = await BookModel.findById(id);
+        if(!book){
+            throw new Error('Book not found');
+        }
+        return book
+    }
 }

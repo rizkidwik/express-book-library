@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import authRoutes from "./routes/auth.routes";
 import categoryRoutes from "./routes/category.routes";
 import bookRoutes from "./routes/book.routes";
+import borrowRoutes from "./routes/borrow.routes";
 import { authMiddleware } from "./middleware/auth.middleware";
 import { roleMiddleware } from "./middleware/roles.middleware";
 import cors from 'cors'
@@ -19,7 +20,7 @@ app.use("/auth", authRoutes);
 app.use("/categories", roleMiddleware, categoryRoutes);
 app.use("/books", roleMiddleware, bookRoutes);
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
-
+app.use("/borrows", roleMiddleware, borrowRoutes)
 
 app.use(
   (
