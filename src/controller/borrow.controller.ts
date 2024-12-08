@@ -8,15 +8,16 @@ import { CreateBorrowRequest, STATUS, UpdateBorrow } from '../models/borrow';
 class BorrowController {
 
     public async list(
-        req: Request<{}, ApiResponse,CreateBookDTO>,
+        req: Request<{}, ApiResponse>,
         res: Response<ApiResponse>
     ): Promise<any> {
         try {
 
-            return res.status(201).json({
+            const result = await BorrowService.list()
+            return res.status(200).json({
                 success: true,
-                message: 'Book successfully created',
-                // data: result
+                message: 'Successfully processed',
+                data: result
             })
         } catch (error) {
             return res.status(400).json({
@@ -42,7 +43,7 @@ class BorrowController {
 
             const result = await BorrowService.request(req.body)
 
-            return res.status(201).json({
+            return res.status(200).json({
                 success: true,
                 message: 'Request successfully processed',
                 data: result
@@ -61,7 +62,7 @@ class BorrowController {
     ): Promise<any> {
         try {            
             const result = await BorrowService.approve(req.body)
-            return res.status(201).json({
+            return res.status(200).json({
                 success: true,
                 message: 'Approved',
                 data: result
@@ -80,7 +81,7 @@ class BorrowController {
     ): Promise<any> {
         try {
             const result = await BorrowService.return(req.body)
-            return res.status(201).json({
+            return res.status(200).json({
                 success: true,
                 message: 'Book return successfully',
                 data: result

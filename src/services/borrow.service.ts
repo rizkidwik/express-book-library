@@ -1,6 +1,11 @@
 import { BorrowModel, CreateBorrowRequest, ReturnBorrow, STATUS, UpdateBorrow } from "../models/borrow";
 
 export class BorrowService {
+    static async list(){
+        const result = await BorrowModel.list();
+
+        return result;
+    }
     static async request(data: CreateBorrowRequest){
         const resultId = await BorrowModel.create(data);
 

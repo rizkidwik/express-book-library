@@ -91,4 +91,15 @@ export class BorrowModel {
 
         return result[0].total
     }
+
+    static async list(): Promise<object> {
+        const [result] = await pool.execute<ResultSetHeader>(
+            `SELECT borrows.*, users.name as user_name, books.title as book_title from borrows 
+            LEFT JOIN users ON borrows.user_id = users.id
+            LEFT JOIN books ON borrows.book_id = books.id
+            `
+        );
+
+        return result;
+    }
 }
